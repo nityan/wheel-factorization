@@ -44,32 +44,19 @@ namespace FactoringAlgorithm
 
 			do
 			{
-				result = BigInteger.TryParse("3233", out number);
+				var value = Console.ReadLine();
+				result = BigInteger.TryParse(value, out number);
+
+				if (!result)
+				{
+					Console.WriteLine($"{value} is not a valid number");
+				}
+
 			} while (!result);
 
-			var sieveResults = SieveOfEratosthenes(8191);
-
-			var number2 = BigInteger.Multiply(new BigInteger(8191), new BigInteger(int.MaxValue));
-			var number3 = BigInteger.Multiply(new BigInteger(6700417), new BigInteger(67280421310721));
-			var number4 = BigInteger.Multiply(new BigInteger(524287), BigInteger.Pow(2, 17) - 1);
-			var number5 = BigInteger.Multiply(BigInteger.Parse("20988936657440586486151264256610222593863921"), BigInteger.Parse("170141183460469231731687303715884105727"));
-
-			RunTrialDivision(number);
 			RunWheelFactorization(number);
 
-			RunTrialDivision(number2);
-			RunWheelFactorization(number2);
-
-			RunTrialDivision(number3);
-			RunWheelFactorization(number3);
-
-			RunTrialDivision(number4);
-			RunWheelFactorization(number4);
-
-			RunWheelFactorization(number5);
-			RunTrialDivision(number5);
-			
-
+			Console.WriteLine("Press any key to exit...");
 			Console.ReadKey();
 		}
 
@@ -102,37 +89,27 @@ namespace FactoringAlgorithm
 			return numbers.Where(c => c.Value).Select(c => c.Key);
 		}
 
-		private static void RunTrialDivision(BigInteger number)
-		{
-			var stopwatch = new Stopwatch();
-
-			stopwatch.Start();
-
-			var results = CalculateFactorsTrialDivision(number);
-
-			stopwatch.Stop();
-
-			Console.ForegroundColor = ConsoleColor.Magenta;
-			Console.WriteLine("Using Trial Division");
-			Console.WriteLine($"Factors of {number} are {string.Join(" ", results)}");
-			Console.WriteLine($"{stopwatch.Elapsed.Hours}:{stopwatch.Elapsed.Minutes}:{stopwatch.Elapsed.Seconds}:{stopwatch.Elapsed.Milliseconds}");
-			Console.ResetColor();
-		}
-
+		/// <summary>
+		/// Runs the wheel factorization.
+		/// </summary>
+		/// <param name="number">The number.</param>
 		private static void RunWheelFactorization(BigInteger number)
 		{
 			var stopwatch = new Stopwatch();
 
+			Console.ForegroundColor = ConsoleColor.Cyan;
+
 			stopwatch.Start();
 
+			Console.WriteLine("Factoring in progress");
 			var results = CalculateFactorsWheelFactorization(number);
 
 			stopwatch.Stop();
 
-			Console.ForegroundColor = ConsoleColor.Cyan;
 			Console.WriteLine("Using Wheel Factorization");
 			Console.WriteLine($"Factors of {number} are {string.Join(" ", results)}");
 			Console.WriteLine($"{stopwatch.Elapsed.Hours}:{stopwatch.Elapsed.Minutes}:{stopwatch.Elapsed.Seconds}:{stopwatch.Elapsed.Milliseconds}");
+
 			Console.ResetColor();
 		}
 
@@ -141,29 +118,6 @@ namespace FactoringAlgorithm
 		/// </summary>
 		/// <param name="number">The number.</param>
 		/// <returns>Returns the factors of a given number.</returns>
-		private static IEnumerable<BigInteger> CalculateFactorsTrialDivision(BigInteger number)
-		{
-			var results = new List<BigInteger>();
-
-			BigInteger potentialFactor = 3;
-
-			while (potentialFactor * potentialFactor <= number)
-			{
-				potentialFactor += 2;
-
-				if (number % (potentialFactor - 2) == BigInteger.Zero)
-				{
-					potentialFactor -= 2;
-					results.Add(potentialFactor);
-					number /= potentialFactor;
-				}
-			}
-
-			results.Add(number);
-
-			return results;
-		}
-
 		private static IEnumerable<BigInteger> CalculateFactorsWheelFactorization(BigInteger number)
 		{
 			var results = new List<BigInteger>();
