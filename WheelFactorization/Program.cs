@@ -16,13 +16,14 @@
  * User: Nityan Khanna
  * Date: 2020-9-15
  */
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 
-namespace FactoringAlgorithm
+namespace WheelFactorization
 {
 	/// <summary>
 	/// Determines the factors of a given number.
